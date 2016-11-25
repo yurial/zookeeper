@@ -125,7 +125,8 @@ enum ZOO_ERRORS {
   ZEPHEMERALONLOCALSESSION = -120, /*!< Attempt to create ephemeral node on a local session */
   ZNOWATCHER = -121, /*!< The watcher couldn't be found */
   ZRWSERVERFOUND = -122, /*!< r/w server found while in r/o mode */
-  ZRECONFIGDISABLED = -123 /*!< Attempts to perform a reconfiguration operation when reconfiguration feature is disabled */
+  ZRECONFIGDISABLED = -123, /*!< Attempts to perform a reconfiguration operation when reconfiguration feature is disabled */
+  ZQUOTAEXCEEDED = -124 /*!<the quota on the rootnode is exceeded  */
 };
 
 #ifdef __cplusplus
