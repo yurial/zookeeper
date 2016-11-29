@@ -67,7 +67,7 @@ fi
 
 if [ "x${ZOO_LOG_DIR}" = "x" ]
 then
-    ZOO_LOG_DIR="$/var/log/zookeeper/"
+    ZOO_LOG_DIR="/var/log/zookeeper"
 fi
 
 if [ "x${ZOO_LOG4J_PROP}" = "x" ]
