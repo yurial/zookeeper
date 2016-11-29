@@ -21,7 +21,7 @@ set(CPACK_PACKAGE_VENDOR                "Adfox at Yandex")
 set(CPACK_PACKAGE_CONTACT               "support@adfox.ru")
 set(CPACK_PACKAGE_VERSION_MAJOR         "3")
 set(CPACK_PACKAGE_VERSION_MINOR         "6")
-set(CPACK_PACKAGE_VERSION_PATCH         "0")
+set(CPACK_PACKAGE_VERSION_PATCH         "0.${CURRENT_DATE}")
 set(PACKAGE_VERSION                     "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME             "adfox-zookeeper-${PACKAGE_VERSION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 # see https://www.debian.org/doc/debian-policy/ch-relationships.html#s7.6.2
