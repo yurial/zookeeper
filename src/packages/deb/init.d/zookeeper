@@ -41,8 +41,8 @@ check_privsep_dir() {
     # Create the PrivSep empty dir if necessary
     if [ ! -d ${ZOOPIDDIR} ]; then
         mkdir -p ${ZOOPIDDIR}
-        chown zookeeper:zookeeper${ZOOPIDDIR}
-        chmod 0775 ${ZOOPIDDIR} 
+        chown zookeeper:zookeeper ${ZOOPIDDIR}
+        chmod 0775 ${ZOOPIDDIR}
     fi
 }
 
