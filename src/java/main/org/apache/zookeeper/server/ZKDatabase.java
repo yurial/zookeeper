@@ -462,6 +462,22 @@ public class ZKDatabase {
         return dataTree.getACL(path, stat);
     }
 
+    public void checkCountQuota(final String path)
+        throws NoNodeException, QuotaExceededException
+    {
+        if (dataTree.strictQuotaMode()) {
+            dataTree.checkCountQuota(path);
+        } // else quota can be checked later in a FinalRequestProcessor stage
+    }
+
+    public void checkBytesQuota(final String path, final long diff)
+        throws NoNodeException, QuotaExceededException
+    {
+        if (dataTree.strictQuotaMode()) {
+            dataTree.checkBytesQuota(path, diff);
+        } // else quota can be checked later in a FinalRequestProcessor stage
+    }
+
     /**
      * get children list for this path
      * @param path the path of the node

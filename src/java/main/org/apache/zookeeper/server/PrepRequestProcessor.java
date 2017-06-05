@@ -423,7 +423,11 @@ public class PrepRequestProcessor extends ZooKeeperCriticalThread implements
                 nodeRecord = getRecordForPath(path);
                 checkACL(zks, request.cnxn, nodeRecord.acl, ZooDefs.Perms.WRITE, request.authInfo, path, null);
                 int newVersion = checkAndIncVersion(nodeRecord.stat.getVersion(), setDataRequest.getVersion(), path);
-                request.setTxn(new SetDataTxn(path, setDataRequest.getData(), newVersion));
+                //Early quota check
+                ZKDatabase zkDb = zks.getZKDatabase();
+                final byte[] data = setDataRequest.getData();
+                zkDb.checkBytesQuota(path, data == null ? 0 : data.length);
+                request.setTxn(new SetDataTxn(path, data, newVersion));
                 nodeRecord = nodeRecord.duplicate(request.getHdr().getZxid());
                 nodeRecord.stat.setVersion(newVersion);
                 addChangeRecord(nodeRecord);
@@ -685,6 +689,10 @@ public class PrepRequestProcessor extends ZooKeeperCriticalThread implements
         if (ephemeralParent) {
             throw new KeeperException.NoChildrenForEphemeralsException(path);
         }
+        //Early quota check
+        ZKDatabase zkDb = zks.getZKDatabase();
+        zkDb.checkCountQuota(path);
+        zkDb.checkBytesQuota(path, data == null ? 0 : data.length);
         int newCversion = parentRecord.stat.getCversion()+1;
         if (type == OpCode.createContainer) {
             request.setTxn(new CreateContainerTxn(path, data, listACL, newCversion));
