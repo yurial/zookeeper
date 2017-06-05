@@ -268,6 +268,10 @@ public class DataTree {
         }
     }
 
+    public boolean strictQuotaMode() {
+        return strictQuotaMode;
+    }
+
     /**
      * is the path one of the special paths owned by zookeeper.
      *
@@ -431,9 +435,14 @@ public class DataTree {
                 throw new KeeperException.NodeExistsException();
             }
 
-            // check if any of the quotas are violated
-            checkCountQuota(path);
-            checkBytesQuota(path, data == null ? 0 : data.length);
+            if (!strictQuotaMode) {
+                // check if any of the quotas are violated
+                // check here only if strictQuotaMode is disabled
+                // otherwise check should be perfomed in request
+                // prepare state (i.e. in PrepRequestProcessor)
+                checkCountQuota(path);
+                checkBytesQuota(path, data == null ? 0 : data.length);
+            }
 
             if (parentCVersion == -1) {
                 parentCVersion = parent.stat.getCversion();
@@ -576,7 +585,13 @@ public class DataTree {
             lastdata = n.data;
             // Check if bytes data quota is violated
             diff = (data == null ? 0 : data.length) - (lastdata == null ? 0 : lastdata.length);
-            checkBytesQuota(path, diff);
+            if (!strictQuotaMode) {
+                // check if any of the quotas are violated
+                // check here only if strictQuotaMode is disabled
+                // otherwise check should be perfomed in request
+                // prepare state (i.e. in PrepRequestProcessor)
+                checkBytesQuota(path, diff);
+            }
             n.data = data;
             n.stat.setMtime(time);
             n.stat.setMzxid(zxid);
